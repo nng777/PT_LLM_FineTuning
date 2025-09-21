@@ -182,7 +182,7 @@ def train_and_evaluate(tokenized_dataset: TokenizedDataset) -> Dict[str, float]:
     else:  #this path is only taken for very old transformers releases.
         try:
             import torch
-        except ImportError as exc:  #surfaced as a runtime error for clarity.
+        except ImportError as exc:  #surfaced as a runtime error for output clarity.
             raise RuntimeError(
                 "DataCollatorWithPadding is unavailable and PyTorch could not be imported."
             ) from exc

@@ -230,6 +230,10 @@ def train_and_evaluate(tokenized_dataset: TokenizedDataset) -> Dict[str, float]:
     LOGGER.info("Starting training…")
     trainer.train()
 
+    LOGGER.info("Saving the fine-tuned model and tokenizer to '%s'…", OUTPUT_DIR)
+    trainer.save_model(OUTPUT_DIR)
+    tokenizer.save_pretrained(OUTPUT_DIR)
+
     LOGGER.info("Evaluating on the test split…")
     metrics = trainer.evaluate(tokenized_dataset.dataset["test"])
     LOGGER.info("Evaluation metrics: %s", metrics)

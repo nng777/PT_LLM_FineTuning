@@ -21,6 +21,9 @@ from transformers.trainer_utils import EvaluationStrategy
 
 MODEL_ID = "distilbert-base-uncased"
 OUTPUT_DIR = "distilbert-finetuned-imdb"
+LABELS = ("NEGATIVE", "POSITIVE")
+ID2LABEL = {index: label for index, label in enumerate(LABELS)}
+LABEL2ID = {label: index for index, label in ID2LABEL.items()}
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 LOGGER = logging.getLogger(__name__)
@@ -166,7 +169,12 @@ def _populate_optional_training_args_fields(
 
 def train_and_evaluate(tokenized_dataset: TokenizedDataset) -> Dict[str, float]:
     LOGGER.info("Loading model '%s'…", MODEL_ID)
-    model = AutoModelForSequenceClassification.from_pretrained(MODEL_ID, num_labels=2)
+    model = AutoModelForSequenceClassification.from_pretrained(
+        MODEL_ID,
+        num_labels=len(ID2LABEL),
+        id2label=ID2LABEL,
+        label2id=LABEL2ID,
+    )
 
     tokenizer = AutoTokenizer.from_pretrained(tokenized_dataset.tokenizer_name, use_fast=True)
     if DataCollatorWithPadding is not None:

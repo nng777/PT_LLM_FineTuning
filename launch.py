@@ -9,4 +9,4 @@ tokenizer = AutoTokenizer.from_pretrained(model_dir)
 model = AutoModelForSequenceClassification.from_pretrained(model_dir)
 
 clf = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
-print(clf("What a fantastic movie!"))
+print(clf("What a nice movie!"))
